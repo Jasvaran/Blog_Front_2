@@ -6,6 +6,8 @@ import './PostTracking.css'
 function PostTracking(props) {
 
     const [posts, setPosts] = useState([])
+    const [publishReturn, setPublishReturn] = useState({})
+
 
     useEffect(() => {
 
@@ -25,7 +27,27 @@ function PostTracking(props) {
         }
         findPosts()
 
-    }, [])
+    }, [publishReturn])
+
+
+
+    async function HandlePublishClick(e){
+        e.preventDefault();
+
+        let response = await fetch('http://localhost:3000/posts/publishing/' + e.target.id, {
+            method: 'PUT',
+            mode: 'cors',
+            credentials: 'include',
+        })
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+                console.log(data)
+                setPublishReturn(data)
+            })
+
+    }
 
 
     return (
@@ -35,11 +57,11 @@ function PostTracking(props) {
                 {posts.map((post, index) => {
                     return <li className='list-group-item d-flex justify-content-between' key={index}>{post.title}
                     
-                        {post.published ? <button className='btn btn-danger'>Unpublish</button> 
+                        {post.published ? <button className='btn btn-danger' onClick={HandlePublishClick} id={post._id}>Unpublish</button> 
                         
                         : 
                         
-                        <button className='btn btn-success'>Publish</button>}
+                        <button className='btn btn-success' onClick={HandlePublishClick} id={post._id}>Publish</button>}
                     
                     </li>
                 })}
