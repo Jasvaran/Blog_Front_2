@@ -49,13 +49,14 @@ function CreatePost(props) {
                 })
                 .then((data) => {
                     console.log(data)
-                    return data
+                    navigate('/')
+                    
                 })
-            navigate('/')
+            
                 
 
         } catch (error) {
-            console.log(error)
+            console.log('errrror',error)
         }
 
     }
